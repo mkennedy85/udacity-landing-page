@@ -17,14 +17,18 @@ const navMenu = document.getElementById('navbar__list');
 const navHeader = document.querySelector('header.page__header');
 const sections = document.querySelectorAll('section');
 const scrollToTopButton = document.querySelector('#scroll__to__top')
+const mobileNavButton = document.querySelector('#mobile__nav')
 
 // Validates whether the element passed to it is in the viewport
 let isInViewport = function (elem) {
-  let bounding = elem.getBoundingClientRect();
-  return (
-      bounding.top >= 0 &&
-      bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight)
-  );
+  let rect = elem.getBoundingClientRect();
+  if (rect.top > -10) {
+    if (rect.y < rect.height) {
+      return true
+    }
+  } else {
+    return false
+  }
 };
 
 // Add class 'active' to section when near top of viewport
@@ -33,8 +37,10 @@ let addActiveClass = function () {
     let container = section.querySelector('.landing__container');
     if (isInViewport(container)) {
       section.classList.add('your-active-class');
+      document.querySelector(`#${section.id}__item`).classList.add('active');
     } else {
       section.classList.remove('your-active-class');
+      document.querySelector(`#${section.id}__item`).classList.remove('active');
     }
   };
 };
@@ -55,7 +61,21 @@ let scrollToTop = function (e) {
     top: 0,
     behavior: "smooth"
   });
-}
+};
+
+// Show nav bar
+let showMobileNavBar = function (e) {
+  e.preventDefault();
+  navHeader.style.display = "block";
+};
+
+// Show nav bar
+let hideMobileNavBar = function () {
+  let mediaWidth = window.matchMedia("(max-width: 1000px)")
+  if (mediaWidth.matches) {
+    navHeader.style.display = "none";
+  }
+};
 
 // Build the navigation menu
 let buildNavMenu = function () {
@@ -64,6 +84,7 @@ let buildNavMenu = function () {
     let navItem = document.createElement('li');
     let navItemLink = document.createElement('a');
   
+    navItem.id = `${section.id}__item`;
     navItemLink.innerHTML = section.dataset.nav;
     navItemLink.href = `#${section.id}`;
     navItemLink.classList.add("menu__link");
@@ -77,7 +98,10 @@ let buildNavMenu = function () {
 
 // Hide navigation bar unless page loaded or mouseover event
 let dimNavHeader = function () {
+  let mediaWidth = window.matchMedia("(max-width: 1000px)")
   if (window.scrollY === 0) {
+    navHeader.style.opacity = 1;
+  } else if (mediaWidth.matches) {
     navHeader.style.opacity = 1;
   } else {
     navHeader.style.opacity = 0.1;
@@ -93,7 +117,10 @@ let showNavHeader = function () {
 window.addEventListener("load", buildNavMenu);
 window.addEventListener("load", addActiveClass);
 window.addEventListener("load", showNavHeader);
+window.addEventListener("load", hideMobileNavBar);
 window.addEventListener("scroll", addActiveClass);
 window.addEventListener("scroll", dimNavHeader);
+window.addEventListener("scroll", hideMobileNavBar);
 navHeader.addEventListener("mouseover", showNavHeader);
-scrollToTopButton.addEventListener("click", function (event) {scrollToTop(event);})
+scrollToTopButton.addEventListener("click", function (event) {scrollToTop(event);});
+mobileNavButton.addEventListener("click", function (event) {showMobileNavBar(event);})
