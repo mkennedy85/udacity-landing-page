@@ -1,9 +1,5 @@
 # Landing Page Project
 
-## Table of Contents
-
-* [Instructions](#instructions)
-
 ## Project
 
 This project requires you to build a multi-section landing page, with a dynamically updating navigational menu based on the amount of content that is added to the page.
@@ -14,7 +10,7 @@ This project does not contain a runtime, but can be viewed by opening the index.
 
 ## Demo
 
-
+This page is hosted as a demo on Github Pages at [https://mkennedy85.github.io/udacity-landing-page/](https://mkennedy85.github.io/udacity-landing-page/)
 
 ## Compatibility
 
