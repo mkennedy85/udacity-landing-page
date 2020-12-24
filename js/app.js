@@ -23,7 +23,7 @@ const mobileNavButton = document.querySelector('#mobile__nav')
 let isInViewport = function (elem) {
   let rect = elem.getBoundingClientRect();
   if (rect.top > -10) {
-    if (rect.y < rect.height) {
+    if (rect.y < (rect.height + 20)) {
       return true
     }
   } else {
